@@ -77,11 +77,7 @@ daemon, although not a true one. It is possible to use the utility, tail, with r
 
 KNOWN ISSUES:
 
-The token to quit or end its while loop is the EOF character, which is currently hardcoded as '\377' in the loop condition. This may pose a problem for 
-certain OS, and you should insert the proper character for EOF.
-
-End of line, or '\n' is considered the token for ending a full line of data, and starting a new one. This is a hardcoded character for commonality sake, although future versions will allow alternative tokens.
-Carriage return, or '\r' is NOT considered the token for ending a full line of data, and it is ignored.
+Carriage return, or '\r' is NOT considered the token for ending a full line of data, and it is ignored. 
 
 There are no arguments required if you use stdin and stdout; hence the application will block on the read() if you invoke it with no stdin and no optional arguments.
 Thus, it may be used to parse typed or cut/pasted data on the console, allowing for quick testing of the final output. Use an interrupt to kill the process. Will not provide the closing tag.
@@ -94,7 +90,11 @@ $ csvtoxml
 $
 
 The escape sequence '\w' is used to accept a white space character (' ') from the command line, but is converted to a single white space char for character comparison. white space is used in certain formats.
-$ csv -c \w -t hi,low,close
+$ csv -c \w -t symbol,hi,low,close,volume
+That will parse a whitespace-seperated value file
+IBM 43.50 43.23 23.40 120000000
+as if its a comma-seperated value file,
+IBM,43.50,43.23,23.40,120000000
 
 You may receive the following warning if you compile:
         warning: unknown escape sequence '\w'
