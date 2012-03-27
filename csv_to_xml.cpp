@@ -2,9 +2,9 @@
  *  cvs_to_xml.cpp
  *  
  *
- *  Created by ptr_to_null on 1/24/07.
+ *  Created by adrian boston on 1/24/07.
  *
- *  Copywrong 2007 __Null__. All rights reserved.
+ *  Copyright 2007 __Adrian_Boston__. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
