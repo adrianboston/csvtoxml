@@ -166,7 +166,7 @@ int csv_to_xml_file(const int head, const char * delimiters, const char * ignore
 	if (file_out == NULL) {
 		bg = std::cout.rdbuf();
 	} else {
-		g.open(file_out, ios::in);
+		g.open(file_out, ios::out);
 		if (!g) {
 			cerr << "Error opening output stream " << file_out << endl;
 			return -1;

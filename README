@@ -23,7 +23,7 @@ USAGE
 				-o set an output filename.
 				-c set an array of delimiters ( \w is whitespace), array treated as individual characters not a string.
 				-d set an array of characters to ignore/delete while parsing. chars will not be present in the output. for example, the comma.
-				-l set the number of lines to insert into header tag.
+				-l set the number of lines to insert into header tag, or basically skip the first number of intro lines.
 				-x set a xsl stylesheet and sets a standard iso <?xml> tag.
                 -t set an array of tags
 
@@ -108,7 +108,7 @@ XML/XSL FUNCTION:
 	
 		The following xsl code will loop through a xml file produced by csvtoxml, using the non-descriptive tags schema.
 					
-				<xsl:for-each select="data/ln">
+				<xsl:for-each select="data/row">
 
 						<tr>
 						<th>
