@@ -99,6 +99,8 @@ IBM,43.50,43.23,23.40,120000000
 You may receive the following warning if you compile:
         warning: unknown escape sequence '\w'
 
+In fact, it was selected as an uncommon escape sequence.
+
 XML/XSL FUNCTION:
 
 This utility defaults to use non-descriptive xml tags, <a></a> ... <z></z> when no tags are provided. Yet this does not destroy the fundamental usefulness of xml and associated technologies such as style-sheets and transformation.
