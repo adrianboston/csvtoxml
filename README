@@ -6,178 +6,178 @@ aka The first public release.
 
 SUMMARY/DESCRIPTION:
 
-		csvtoxml is a useful command line utility that converts (parses) comma,separated,value (csv) data, or any other tag-seperated-value data,
-		into xml tagged data.
+csvtoxml is a useful command line utility that converts (parses) comma,separated,value (csv) data, or any other tag seperated-value data into xml tagged data.
 
-		Optional arguments include number of header lines, input file, output file, token chars (comma is default) and xsl sheet destination.
+Optional arguments include number of header lines, input file, output file, token chars (comma is default) and xsl sheet destination.
 
-		Speed and simplicity is the leading considerations throughout the design of this utility; while, verbosity and descriptiveness is sacrificed and, or avoided in output tags.
-		csvtoxml is designed to fully utilize existing tried-and-true tools in string concatenation, string replacement, file find, data retrieval from web URLs, compression and storage.
+Speed and simplicity is the leading considerations throughout the design of this utility; while, verbosity and descriptiveness is sacrificed and, or avoided in output tags.
+
+csvtoxml is designed to fully utilize existing tried-and-true tools in string concatenation, string replacement, file find, data retrieval from web URLs, compression and storage.
 
 USAGE
 
-		Usage: csvtoxml [-i file] [-o file] [-c chars] [-d chars] [-l header] [-x xsl]  
+    Usage: csvtoxml [-i file] [-o file] [-c chars] [-d chars] [-l header] [-x xsl]  
 
-		Where options include:
-				-i set an input filename.
-				-o set an output filename.
-				-c set an array of delimiters ( \w is whitespace), array treated as individual characters not a string.
-				-d set an array of characters to ignore/delete while parsing. chars will not be present in the output. for example, the comma.
-				-l set the number of lines to insert into header tag, or basically skip the first number of intro lines.
-				-x set a xsl stylesheet and sets a standard iso <?xml> tag.
-                -t set an array of tags
+    Where options include:
+            -i set an input filename.
+            -o set an output filename.
+            -c set an array of delimiters ( \w is whitespace), array treated as individual characters not a string.
+            -d set an array of characters to ignore/delete while parsing. chars will not be present in the output. for example, the comma.
+            -l set the number of lines to insert into header tag, or basically skip the first number of intro lines.
+            -x set a xsl stylesheet and sets a standard iso <?xml> tag.
+            -t set an array of tags
 
-		Example:
-				 1. Convert a csv input file and pipe it into output file
-				csvtoxml -i /var/datafile.csv -l 2 > resultingfile.xml
-				
-				 2. Pipe the contents into executable and pipe that into output file
-				more /var/datafile.csv | csvtoxml -l 2 > resultingfile.xml
-				
-				 3. Pipe the contents into executable and write to output file
-				more /var/datafile.csv | csvtoxml -l 2 -o resultingfile.xml
+    Example:
+             1. Convert a csv input file and pipe it into output file
+            csvtoxml -i /var/datafile.csv -l 2 > resultingfile.xml
+            
+             2. Pipe the contents into executable and pipe that into output file
+            more /var/datafile.csv | csvtoxml -l 2 > resultingfile.xml
+            
+             3. Pipe the contents into executable and write to output file
+            more /var/datafile.csv | csvtoxml -l 2 -o resultingfile.xml
 
-				 4. Pipe the contents into executable, use certain tags (<high><low>) and write to output file
-				more /var/datafile.csv | csvtoxml -l 2 -t high,low -o resultingfile.xml
+             4. Pipe the contents into executable, use certain tags (<high><low>) and write to output file
+            more /var/datafile.csv | csvtoxml -l 2 -t high,low -o resultingfile.xml
 
 NOTE:	'csvtoxml -help' will provide the above help on the commandline
 
 FUNCTION:
 
-		This program converts a single comma-seperated-value (CSV) stream into an xml tagged stream using stdin or file stream as input.
-        The resulting xml stream is sent to stdout, an output file may be specified.
-        Comma is the default seperator between values, given its popularity in corporate data communication. However, seperating token, and set of tokens) may be specified.
-        End of line, \n, is the indicator for a new line of data, although this may be an added option in the future.
-        
-        This version offers the ability to insert descriptive tags that are provided as an single csv argument string. 
-        '-t tag1,tag2' will insert <tag1> and <tag2> around the first and second tagged value. It will then revert to alpha tags, decribed below.
-        
-        Otherwise, the xml tags are incremented <a>, <b>, ,,, <z>. Tags are recycled at z, additional characters are double, triple, quad, quint tags: <aa>,<bb>, <aaa>, etc.
-		The xml tag for an empty value, in the case of ,, is a closing xml tag, which is valid xml.  
-		
-		The rudimentary & non-descriptive tags, <a>...<zzz> , may be converted to descriptive tags using sed replace sed s/
-		
-        This version has no facility for converting tokens as xml attributes, although this function may be added at a later date.
+    This program converts a single comma-seperated-value (CSV) stream into an xml tagged stream using stdin or file stream as input.
+    The resulting xml stream is sent to stdout, an output file may be specified.
+    Comma is the default seperator between values, given its popularity in corporate data communication. However, seperating token, and set of tokens) may be specified.
+    End of line, \n, is the indicator for a new line of data, although this may be an added option in the future.
+    
+    This version offers the ability to insert descriptive tags that are provided as an single csv argument string. 
+    '-t tag1,tag2' will insert <tag1> and <tag2> around the first and second tagged value. It will then revert to alpha tags, decribed below.
+    
+    Otherwise, the xml tags are incremented <a>, <b>, ,,, <z>. Tags are recycled at z, additional characters are double, triple, quad, quint tags: <aa>,<bb>, <aaa>, etc.
+    The xml tag for an empty value, in the case of ,, is a closing xml tag, which is valid xml.  
+    
+    The rudimentary & non-descriptive tags, <a>...<zzz> , may be converted to descriptive tags using sed replace sed s/
+    
+    This version has no facility for converting tokens as xml attributes, although this function may be added at a later date.
 
-		The utility is designed to be used with unix pipes, and utilize the functionality of existing tools.
-		It is possible to pipe with cat, pr, wget, zip, grep, sed, awk for added functionality.
-		
-		A useful combination is 'find' with -exec to execute csvtoxml on multiple files, such as:
-			find . -type f -name "*.dat" -exec ./csv_to_xml -s 3 -i {} -o {} \;
-		
-		A useful combination for reading csv data directly from a URL is wget piped (or filed into) csvtoxml. The following retreives csv data from 
-		finance.yahoo.com, pipes into csvtoxml which then redirects the stdout into SPX_data.xml (Use -o SPX_data.xml with Windows):
-		
-			wget http://ichart.finance.yahoo.com/table.csv?s=%5EGSPC&d=1&e=5&f=2007&g=d&a=0&b=3&c=1950&ignore=.csv | csvtoxml -l 1 > SPX_data.xml
-			
-			-l 1 will place the leading one (1) line, typically (Date,Open,High,Low,Close,Volume,Adj. Close*) into a header <hd></hd> tag.
-						
-		The utility reads character by character and it blocks on the character read. It will parse a real-time stream of characters, acting a bit like a 
-		daemon, although not a true one. It is possible to use the utility, tail, with refresh in order to read an ongoing real-time stream. 
+    The utility is designed to be used with unix pipes, and utilize the functionality of existing tools.
+    It is possible to pipe with cat, pr, wget, zip, grep, sed, awk for added functionality.
+    
+    A useful combination is 'find' with -exec to execute csvtoxml on multiple files, such as:
+        find . -type f -name "*.dat" -exec ./csv_to_xml -s 3 -i {} -o {} \;
+    
+    A useful combination for reading csv data directly from a URL is wget piped (or filed into) csvtoxml. The following retreives csv data from 
+    finance.yahoo.com, pipes into csvtoxml which then redirects the stdout into SPX_data.xml (Use -o SPX_data.xml with Windows):
+    
+        wget http://ichart.finance.yahoo.com/table.csv?s=%5EGSPC&d=1&e=5&f=2007&g=d&a=0&b=3&c=1950&ignore=.csv | csvtoxml -l 1 > SPX_data.xml
+        
+        -l 1 will place the leading one (1) line, typically (Date,Open,High,Low,Close,Volume,Adj. Close*) into a header <hd></hd> tag.
+                    
+    The utility reads character by character and it blocks on the character read. It will parse a real-time stream of characters, acting a bit like a 
+    daemon, although not a true one. It is possible to use the utility, tail, with refresh in order to read an ongoing real-time stream. 
 
 KNOWN ISSUES:
 
-		The token to quit or end its while loop is the EOF character, which is currently hardcoded as '\377' in the loop condition. This may pose a problem for 
-		certain OS, and you should insert the proper character for EOF.
-		
-		End of line, or '\n' is considered the token for ending a full line of data, and starting a new one. This is a hardcoded character for commonality sake, although future versions will allow alternative tokens.
-		Carriage return, or '\r' is NOT considered the token for ending a full line of data, and it is ignored.
-		
-		There are no arguments required if you use stdin and stdout; hence the application will block on the read() if you invoke it with no stdin and no optional arguments.
-		Thus, it may be used to parse typed or cut/pasted data on the console, allowing for quick testing of the final output. Use an interrupt to kill the process. Will not provide the closing tag.
-		
-		$ csvtoxml
-		<data>
-		07 Jan 135.0 (RFY AG-E),1.80,pc,0,0,0,19659,07 Jan 135.0 (RFY MG-E),8.30,pc,0,0,0,6910 
-		<ln><a>07 Jan 135.0 (RFY AG-E)</a><b>1.80</b><c>pc</c><d>0</d><e>0</e><f>0</f><g>19659</g><h>07 Jan 135.0 (RFY MG-E)</h><i>8.30</i><j>pc</j><k>0</k><l>0</l><m>0</m><n>6910</n></ln>
-		^C
-		$
+    The token to quit or end its while loop is the EOF character, which is currently hardcoded as '\377' in the loop condition. This may pose a problem for 
+    certain OS, and you should insert the proper character for EOF.
+    
+    End of line, or '\n' is considered the token for ending a full line of data, and starting a new one. This is a hardcoded character for commonality sake, although future versions will allow alternative tokens.
+    Carriage return, or '\r' is NOT considered the token for ending a full line of data, and it is ignored.
+    
+    There are no arguments required if you use stdin and stdout; hence the application will block on the read() if you invoke it with no stdin and no optional arguments.
+    Thus, it may be used to parse typed or cut/pasted data on the console, allowing for quick testing of the final output. Use an interrupt to kill the process. Will not provide the closing tag.
+    
+    $ csvtoxml
+    <data>
+    07 Jan 135.0 (RFY AG-E),1.80,pc,0,0,0,19659,07 Jan 135.0 (RFY MG-E),8.30,pc,0,0,0,6910 
+    <ln><a>07 Jan 135.0 (RFY AG-E)</a><b>1.80</b><c>pc</c><d>0</d><e>0</e><f>0</f><g>19659</g><h>07 Jan 135.0 (RFY MG-E)</h><i>8.30</i><j>pc</j><k>0</k><l>0</l><m>0</m><n>6910</n></ln>
+    ^C
+    $
 
-		The escape sequence '\w' is used to accept a white space character (' ') from the command line, but is converted to a single white space char for character comparison. white space is used in certain formats.
-        $ csv -c \w -t hi,low,close
+    The escape sequence '\w' is used to accept a white space character (' ') from the command line, but is converted to a single white space char for character comparison. white space is used in certain formats.
+    $ csv -c \w -t hi,low,close
 
-		You may receive the following warning if you compile:
-				warning: unknown escape sequence '\w'
+    You may receive the following warning if you compile:
+            warning: unknown escape sequence '\w'
 
 XML/XSL FUNCTION:
 
-		This utility uses non-descriptive xml tags, <a></a> ... <z></z>, yet this does not destroy the fundamental usefulness of xml and associated technologies such as style-sheets and transformation.
-		The function of tag naming is not for recognition by human users but for recognition by computer system. Having descriptive tags, such as </price></last> is of no additional value to a system.
-		The tag and value, <a>5.0</a> is as meaningful as <price>5.0</price> to a system.
-		
-	
-		The following xsl code will loop through a xml file produced by csvtoxml, using the non-descriptive tags schema.
-					
-				<xsl:for-each select="data/row">
+    This utility uses non-descriptive xml tags, <a></a> ... <z></z>, yet this does not destroy the fundamental usefulness of xml and associated technologies such as style-sheets and transformation.
+    The function of tag naming is not for recognition by human users but for recognition by computer system. Having descriptive tags, such as </price></last> is of no additional value to a system.
+    The tag and value, <a>5.0</a> is as meaningful as <price>5.0</price> to a system.
+    
 
-						<tr>
-						<th>
-							<span style="font-weight:bold;color:black">
-								<xsl:value-of select="a"/>
-							</span>
-						</th><th>
-							<xsl:value-of select="b"/>
-						</th><th>
-							<xsl:value-of select="c"/>
-						</th><th>
-							<xsl:value-of select="d"/>
-						</th><th>
-							<xsl:value-of select="e"/>
-						</th><th>
-							<xsl:value-of select="f"/>
-						</th><th>
-							<xsl:value-of select="g"/>
-						</th><th>
-							<xsl:value-of select="e - d"/>  <!-- this is basic math function in xsl -->
-						</th><th>
-							<span style="font-weight:bold;color:black">
-								<xsl:value-of select="h"/>
-							</span>
-						</th><th>
-							<xsl:value-of select="i"/>
-						</th><th>
-							<xsl:value-of select="j"/>
-						</th><th>
-							<xsl:value-of select="k"/>
-						</th><th>
-							<xsl:value-of select="l"/>
-						</th><th>
-							<xsl:value-of select="m"/>
-						</th><th>
-							<xsl:value-of select="n"/>
-						</th><th>
-							<xsl:value-of select="o"/>
-						</th><th>
-							<xsl:value-of select="l - k"/>
-						</th>
-						</tr>
-						
-				</xsl:for-each>
+    The following xsl code will loop through a xml file produced by csvtoxml, using the non-descriptive tags schema.
+                
+            <xsl:for-each select="data/row">
+
+                    <tr>
+                    <th>
+                        <span style="font-weight:bold;color:black">
+                            <xsl:value-of select="a"/>
+                        </span>
+                    </th><th>
+                        <xsl:value-of select="b"/>
+                    </th><th>
+                        <xsl:value-of select="c"/>
+                    </th><th>
+                        <xsl:value-of select="d"/>
+                    </th><th>
+                        <xsl:value-of select="e"/>
+                    </th><th>
+                        <xsl:value-of select="f"/>
+                    </th><th>
+                        <xsl:value-of select="g"/>
+                    </th><th>
+                        <xsl:value-of select="e - d"/>  <!-- this is basic math function in xsl -->
+                    </th><th>
+                        <span style="font-weight:bold;color:black">
+                            <xsl:value-of select="h"/>
+                        </span>
+                    </th><th>
+                        <xsl:value-of select="i"/>
+                    </th><th>
+                        <xsl:value-of select="j"/>
+                    </th><th>
+                        <xsl:value-of select="k"/>
+                    </th><th>
+                        <xsl:value-of select="l"/>
+                    </th><th>
+                        <xsl:value-of select="m"/>
+                    </th><th>
+                        <xsl:value-of select="n"/>
+                    </th><th>
+                        <xsl:value-of select="o"/>
+                    </th><th>
+                        <xsl:value-of select="l - k"/>
+                    </th>
+                    </tr>
+                    
+            </xsl:for-each>
 
 
 INSTALLATION
 
-		Follow these steps. 
-			1. Download or git the latest csvtoxml-*.zip (or .tar) file.
-			2. Unzip (extract) the contained .cpp, README, and other associated xml and xsl examples
-			3. Compile the source .cpp file using g++, visual c++ or c++ compiler, if you have not downloaded a compiled binary for a certain OS
-			4. Copy the resulting binary file into your binary path, for example, /usr/local/bin
-			5. Update your PATH with the location of the csvtoxml binary, if required
+    Follow these steps. 
+        1. Download or git the latest csvtoxml-*.zip (or .tar) file.
+        2. Unzip (extract) the contained .cpp, README, and other associated xml and xsl examples
+        3. Compile the source .cpp file using g++, visual c++ or c++ compiler, if you have not downloaded a compiled binary for a certain OS
+        4. Copy the resulting binary file into your binary path, for example, /usr/local/bin
+        5. Update your PATH with the location of the csvtoxml binary, if required
 
 
 GCC/G++ COMPILE/LD COMMAND
-		Give the simplicity of this projet, its possible to merely run the following on the command line.
-        NOTE: Switch -arch to destination machine. This one is i386 or "Intel 386". Using no-arch or the wrong architecture will risk errors, although build may work.
+    Give the simplicity of this projet, its possible to merely run the following on the command line.
+    NOTE: Switch -arch to destination machine. This one is i386 or "Intel 386". Using no-arch or the wrong architecture will risk errors, although build may work.
 
-        g++ -arch i386  -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O0 -fasm-blocks -gdwarf-2 -fvisibility=hidden -fvisibility-inlines-hidden csv_to_xml.cpp  -o csvtoxml 
+    g++ -arch i386  -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O0 -fasm-blocks -gdwarf-2 -fvisibility=hidden -fvisibility-inlines-hidden csv_to_xml.cpp  -o csvtoxml 
 
-        NOTE: warning: unknown escape sequence '\w' is not a error or oversight.
-                See KNOWN ISSUES
+    NOTE: warning: unknown escape sequence '\w' is not a error or oversight.
+            See KNOWN ISSUES
 
 FUTURE VERSIONS
 
-		May include:
-			an option for specifying the line number of the key code, so that tags can be descriptive rather than non-descriptive.
-			an option for providing a string of key codes.
-			an option for ignoring full lines in the output xml
-			examples of csv data, resulting xml and useful xsl sheets.
+    May include:
+        an option for specifying the line number of the key code, so that tags can be descriptive rather than non-descriptive.
+        an option for providing a string of key codes.
+        an option for ignoring full lines in the output xml
+        examples of csv data, resulting xml and useful xsl sheets.
